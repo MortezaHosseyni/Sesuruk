@@ -33,7 +33,12 @@
             this.brm_TopBar = new DevExpress.XtraBars.BarManager(this.components);
             this.bar_TopMenu = new DevExpress.XtraBars.Bar();
             this.btn_Sound = new DevExpress.XtraBars.BarButtonItem();
+            this.mnu_Sound = new DevExpress.XtraBars.PopupMenu(this.components);
+            this.btn_AddSoundTop = new DevExpress.XtraBars.BarButtonItem();
+            this.btn_SettingsForm = new DevExpress.XtraBars.BarButtonItem();
             this.btn_Help = new DevExpress.XtraBars.BarButtonItem();
+            this.mnu_Help = new DevExpress.XtraBars.PopupMenu(this.components);
+            this.btn_About = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -50,20 +55,15 @@
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
             this.simpleButton5 = new DevExpress.XtraEditors.SimpleButton();
             this.simpleButton4 = new DevExpress.XtraEditors.SimpleButton();
-            this.mnu_Sound = new DevExpress.XtraBars.PopupMenu(this.components);
-            this.mnu_Help = new DevExpress.XtraBars.PopupMenu(this.components);
-            this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
-            this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
-            this.barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.brm_TopBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mnu_Sound)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mnu_Help)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbl_Sounds)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pgb_SoundProgress.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnl_SoundPlay)).BeginInit();
             this.pnl_SoundPlay.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.mnu_Sound)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.mnu_Help)).BeginInit();
             this.SuspendLayout();
             // 
             // brm_TopBar
@@ -78,9 +78,9 @@
             this.brm_TopBar.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.btn_Sound,
             this.btn_Help,
-            this.barButtonItem1,
-            this.barButtonItem2,
-            this.barButtonItem3});
+            this.btn_AddSoundTop,
+            this.btn_SettingsForm,
+            this.btn_About});
             this.brm_TopBar.MainMenu = this.bar_TopMenu;
             this.brm_TopBar.MaxItemId = 5;
             // 
@@ -108,6 +108,27 @@
             this.btn_Sound.Id = 0;
             this.btn_Sound.Name = "btn_Sound";
             // 
+            // mnu_Sound
+            // 
+            this.mnu_Sound.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.btn_AddSoundTop),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btn_SettingsForm)});
+            this.mnu_Sound.Manager = this.brm_TopBar;
+            this.mnu_Sound.Name = "mnu_Sound";
+            // 
+            // btn_AddSoundTop
+            // 
+            this.btn_AddSoundTop.Caption = "Add Sound";
+            this.btn_AddSoundTop.Id = 2;
+            this.btn_AddSoundTop.Name = "btn_AddSoundTop";
+            // 
+            // btn_SettingsForm
+            // 
+            this.btn_SettingsForm.Caption = "Settings";
+            this.btn_SettingsForm.Id = 3;
+            this.btn_SettingsForm.Name = "btn_SettingsForm";
+            this.btn_SettingsForm.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btn_SettingsForm_ItemClick);
+            // 
             // btn_Help
             // 
             this.btn_Help.ActAsDropDown = true;
@@ -116,6 +137,20 @@
             this.btn_Help.DropDownControl = this.mnu_Help;
             this.btn_Help.Id = 1;
             this.btn_Help.Name = "btn_Help";
+            // 
+            // mnu_Help
+            // 
+            this.mnu_Help.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.btn_About)});
+            this.mnu_Help.Manager = this.brm_TopBar;
+            this.mnu_Help.Name = "mnu_Help";
+            // 
+            // btn_About
+            // 
+            this.btn_About.Caption = "About";
+            this.btn_About.Id = 4;
+            this.btn_About.Name = "btn_About";
+            this.btn_About.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btn_About_ItemClick);
             // 
             // barDockControlTop
             // 
@@ -283,39 +318,6 @@
             this.simpleButton4.TabIndex = 10;
             this.simpleButton4.ToolTip = "Add new sound";
             // 
-            // mnu_Sound
-            // 
-            this.mnu_Sound.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem1),
-            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem2)});
-            this.mnu_Sound.Manager = this.brm_TopBar;
-            this.mnu_Sound.Name = "mnu_Sound";
-            // 
-            // mnu_Help
-            // 
-            this.mnu_Help.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem3)});
-            this.mnu_Help.Manager = this.brm_TopBar;
-            this.mnu_Help.Name = "mnu_Help";
-            // 
-            // barButtonItem1
-            // 
-            this.barButtonItem1.Caption = "Add Sound";
-            this.barButtonItem1.Id = 2;
-            this.barButtonItem1.Name = "barButtonItem1";
-            // 
-            // barButtonItem2
-            // 
-            this.barButtonItem2.Caption = "Settings";
-            this.barButtonItem2.Id = 3;
-            this.barButtonItem2.Name = "barButtonItem2";
-            // 
-            // barButtonItem3
-            // 
-            this.barButtonItem3.Caption = "About";
-            this.barButtonItem3.Id = 4;
-            this.barButtonItem3.Name = "barButtonItem3";
-            // 
             // FormMain
             // 
             this.Appearance.BackColor = System.Drawing.Color.White;
@@ -332,13 +334,16 @@
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
             this.Font = new System.Drawing.Font("Tahoma", 12F);
-            this.IconOptions.Image = ((System.Drawing.Image)(resources.GetObject("FormMain.IconOptions.Image")));
+            this.IconOptions.Image = global::Sesuruk.Properties.Resources.Sesuruk;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MinimumSize = new System.Drawing.Size(476, 687);
             this.Name = "FormMain";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sesuruk";
             this.Load += new System.EventHandler(this.FormMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.brm_TopBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mnu_Sound)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mnu_Help)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbl_Sounds)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pgb_SoundProgress.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnl_SoundPlay)).EndInit();
@@ -346,8 +351,6 @@
             this.pnl_SoundPlay.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
             this.panelControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.mnu_Sound)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.mnu_Help)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -377,9 +380,9 @@
         private DevExpress.XtraEditors.LabelControl labelControl1;
         private DevExpress.XtraBars.PopupMenu mnu_Sound;
         private DevExpress.XtraBars.PopupMenu mnu_Help;
-        private DevExpress.XtraBars.BarButtonItem barButtonItem1;
-        private DevExpress.XtraBars.BarButtonItem barButtonItem2;
-        private DevExpress.XtraBars.BarButtonItem barButtonItem3;
+        private DevExpress.XtraBars.BarButtonItem btn_AddSoundTop;
+        private DevExpress.XtraBars.BarButtonItem btn_SettingsForm;
+        private DevExpress.XtraBars.BarButtonItem btn_About;
     }
 }
 
