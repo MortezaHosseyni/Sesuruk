@@ -1,10 +1,6 @@
-﻿using DevExpress.LookAndFeel;
-using DevExpress.Skins;
-using DevExpress.UserSkins;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Windows.Forms;
+using Sesuruk.Functions;
 
 namespace Sesuruk
 {
@@ -14,11 +10,11 @@ namespace Sesuruk
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormMain());
+            Application.Run(new FormMain(new Sound()));
         }
     }
 }
