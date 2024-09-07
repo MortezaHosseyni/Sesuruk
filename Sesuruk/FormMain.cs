@@ -1,10 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevExpress.XtraBars;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
+using NAudio.Vorbis;
+using NAudio.Wave;
 using Sesuruk.Forms;
 using Sesuruk.Functions;
 
@@ -13,14 +17,20 @@ namespace Sesuruk
     public partial class FormMain : XtraForm
     {
         private readonly Sound _soundManager;
+        private readonly Settings _settings;
 
         private readonly BindingList<Sound> _soundList = new BindingList<Sound>();
 
-        public FormMain(Sound soundManager)
+        private string _currentSound = string.Empty;
+
+        public FormMain(Sound soundManager, Settings settings)
         {
             InitializeComponent();
 
             _soundManager = soundManager;
+            _settings = settings;
+
+            ctx_AudioStatus.Text = "Device Id: " + settings.GetVirtualCableDeviceIndex();
 
             jds_SoundSource.FillAsync();
             dgv_SoundsList.DataSource = _soundList;
@@ -116,6 +126,116 @@ namespace Sesuruk
             _soundManager.Delete(Guid.Parse(id.ToString()));
 
             LoadSounds();
+        }
+        #endregion
+
+        #region Play & Load Sounds
+        private WaveOutEvent _outputDevice;
+        private WaveStream _audioFile;
+        private bool _isPlaying;
+
+        public async Task PlaySound()
+        {
+            var audioFilePath = _currentSound;
+
+            if (!File.Exists(audioFilePath))
+            {
+                MessageBox.Show("Audio file is invalid.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            StopSound();
+
+            if (audioFilePath.EndsWith(".ogg", StringComparison.OrdinalIgnoreCase))
+                _audioFile = new VorbisWaveReader(audioFilePath);
+            else
+                _audioFile = new AudioFileReader(audioFilePath);
+
+            _outputDevice = new WaveOutEvent();
+
+            try
+            {
+                var virtualCableDeviceId = _settings.GetVirtualCableDeviceIndex();
+                _outputDevice.DeviceNumber = virtualCableDeviceId;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            _outputDevice.Init(_audioFile);
+
+            _outputDevice.PlaybackStopped += OnPlaybackStopped;
+
+            _isPlaying = true;
+
+            var totalDuration = _audioFile.TotalTime;
+            pgb_SoundProgress.Properties.Maximum = (int)totalDuration.TotalSeconds;
+            pgb_SoundProgress.EditValue = 0;
+
+            _outputDevice.Play();
+
+            btn_PlayPause.ImageOptions.SvgImage = Properties.Resources.pause;
+
+            ctx_CurrentSoundName.Text = _currentSound.Split('\\').Last();
+
+            while (_outputDevice?.PlaybackState == PlaybackState.Playing && _isPlaying)
+            {
+                var currentPosition = _audioFile.CurrentTime;
+
+                pgb_SoundProgress.EditValue = (int)currentPosition.TotalSeconds;
+
+                var remainingTime = totalDuration - currentPosition;
+                ctx_SoundDuration.Invoke((MethodInvoker)(() =>
+                        ctx_SoundDuration.Text = remainingTime.ToString(@"mm\:ss")
+                ));
+
+                await Task.Delay(500);
+            }
+
+            StopSound();
+        }
+
+        private void OnPlaybackStopped(object sender, StoppedEventArgs e)
+        {
+            _isPlaying = false;
+        }
+
+        public void StopSound()
+        {
+            if (_outputDevice == null) return;
+
+            _outputDevice.Stop();
+            _outputDevice.Dispose();
+            _outputDevice = null;
+
+            _audioFile?.Dispose();
+            _audioFile = null;
+
+            _isPlaying = false;
+
+            pgb_SoundProgress.EditValue = 0;
+            ctx_SoundDuration.Text = "00:00";
+            btn_PlayPause.ImageOptions.SvgImage = Properties.Resources.next;
+        }
+
+        private async void btn_PlayPause_Click(object sender, EventArgs e)
+        {
+            if (_isPlaying)
+                StopSound();
+            else
+                await PlaySound();
+        }
+
+        private void dgv_SoundsList_Click(object sender, EventArgs e)
+        {
+            if (!(dgv_SoundsList.MainView is GridView view)) return;
+
+            var location = view.GetFocusedRowCellValue("Location").ToString();
+
+            StopSound();
+            _currentSound = location;
         }
         #endregion
     }

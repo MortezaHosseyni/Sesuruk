@@ -45,7 +45,7 @@
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.pgb_SoundProgress = new DevExpress.XtraEditors.ProgressBarControl();
             this.pnl_SoundPlay = new DevExpress.XtraEditors.PanelControl();
-            this.ctx_OutputDeviceName = new DevExpress.XtraEditors.LabelControl();
+            this.ctx_AudioStatus = new DevExpress.XtraEditors.LabelControl();
             this.ctx_CurrentSoundName = new DevExpress.XtraEditors.LabelControl();
             this.ctx_SoundDuration = new DevExpress.XtraEditors.LabelControl();
             this.btn_Previous = new DevExpress.XtraEditors.SimpleButton();
@@ -209,7 +209,7 @@
             // 
             this.pnl_SoundPlay.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnl_SoundPlay.Controls.Add(this.ctx_OutputDeviceName);
+            this.pnl_SoundPlay.Controls.Add(this.ctx_AudioStatus);
             this.pnl_SoundPlay.Controls.Add(this.ctx_CurrentSoundName);
             this.pnl_SoundPlay.Controls.Add(this.ctx_SoundDuration);
             this.pnl_SoundPlay.Controls.Add(this.btn_Previous);
@@ -221,15 +221,15 @@
             this.pnl_SoundPlay.Size = new System.Drawing.Size(780, 63);
             this.pnl_SoundPlay.TabIndex = 6;
             // 
-            // ctx_OutputDeviceName
+            // ctx_AudioStatus
             // 
-            this.ctx_OutputDeviceName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.ctx_AudioStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.ctx_OutputDeviceName.Location = new System.Drawing.Point(140, 42);
-            this.ctx_OutputDeviceName.Name = "ctx_OutputDeviceName";
-            this.ctx_OutputDeviceName.Size = new System.Drawing.Size(24, 13);
-            this.ctx_OutputDeviceName.TabIndex = 10;
-            this.ctx_OutputDeviceName.Text = "XXXX";
+            this.ctx_AudioStatus.Location = new System.Drawing.Point(140, 42);
+            this.ctx_AudioStatus.Name = "ctx_AudioStatus";
+            this.ctx_AudioStatus.Size = new System.Drawing.Size(24, 13);
+            this.ctx_AudioStatus.TabIndex = 10;
+            this.ctx_AudioStatus.Text = "XXXX";
             // 
             // ctx_CurrentSoundName
             // 
@@ -275,11 +275,12 @@
             // 
             this.btn_PlayPause.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.btn_PlayPause.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_PlayPause.ImageOptions.SvgImage")));
+            this.btn_PlayPause.ImageOptions.SvgImage = global::Sesuruk.Properties.Resources.next;
             this.btn_PlayPause.Location = new System.Drawing.Point(50, 21);
             this.btn_PlayPause.Name = "btn_PlayPause";
             this.btn_PlayPause.Size = new System.Drawing.Size(39, 36);
             this.btn_PlayPause.TabIndex = 6;
+            this.btn_PlayPause.Click += new System.EventHandler(this.btn_PlayPause_Click);
             // 
             // pnl_OpButtons
             // 
@@ -327,6 +328,7 @@
             this.dgv_SoundsList.TabIndex = 18;
             this.dgv_SoundsList.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.grv_Main});
+            this.dgv_SoundsList.Click += new System.EventHandler(this.dgv_SoundsList_Click);
             // 
             // grv_Main
             // 
@@ -413,7 +415,7 @@
         private DevExpress.XtraEditors.PanelControl pnl_OpButtons;
         private DevExpress.XtraEditors.SimpleButton btn_DeleteSound;
         private DevExpress.XtraEditors.SimpleButton btn_AddSound;
-        private DevExpress.XtraEditors.LabelControl ctx_OutputDeviceName;
+        private DevExpress.XtraEditors.LabelControl ctx_AudioStatus;
         private DevExpress.XtraBars.PopupMenu mnu_Sound;
         private DevExpress.XtraBars.PopupMenu mnu_Help;
         private DevExpress.XtraBars.BarButtonItem btn_AddSoundTop;
