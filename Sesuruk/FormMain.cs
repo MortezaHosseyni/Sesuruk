@@ -158,6 +158,8 @@ namespace Sesuruk
 
         public async Task PlaySound()
         {
+            if (!_soundList.Any()) return;
+
             var audioFilePath = _currentSound;
 
             if (!File.Exists(audioFilePath))
@@ -258,6 +260,8 @@ namespace Sesuruk
 
         public void StopSound()
         {
+            if (!_soundList.Any()) return;
+
             RevertToPreviousInputDevice();
 
             if (_outputDevice != null)
@@ -336,6 +340,8 @@ namespace Sesuruk
 
         private void dgv_SoundsList_Click(object sender, EventArgs e)
         {
+            if (!_soundList.Any()) return;
+
             if (!(dgv_SoundsList.MainView is GridView view)) return;
 
             var location = view.GetFocusedRowCellValue("Location").ToString();
@@ -346,6 +352,8 @@ namespace Sesuruk
 
         private void btn_Next_Click(object sender, EventArgs e)
         {
+            if (!_soundList.Any()) return;
+
             if (!(dgv_SoundsList.MainView is GridView view)) return;
 
             var currentRowHandle = view.FocusedRowHandle;
@@ -368,6 +376,8 @@ namespace Sesuruk
 
         private void btn_Previous_Click(object sender, EventArgs e)
         {
+            if (!_soundList.Any()) return;
+
             if (!(dgv_SoundsList.MainView is GridView view)) return;
 
             var currentRowHandle = view.FocusedRowHandle;
