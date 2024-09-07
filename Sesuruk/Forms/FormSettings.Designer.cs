@@ -42,6 +42,7 @@
             // 
             this.lbl_OutputDevice.Appearance.Font = new System.Drawing.Font("Tahoma", 12F);
             this.lbl_OutputDevice.Appearance.Options.UseFont = true;
+            this.lbl_OutputDevice.Enabled = false;
             this.lbl_OutputDevice.Location = new System.Drawing.Point(12, 12);
             this.lbl_OutputDevice.Name = "lbl_OutputDevice";
             this.lbl_OutputDevice.Size = new System.Drawing.Size(106, 19);
@@ -50,6 +51,7 @@
             // 
             // ddb_OutputDevice
             // 
+            this.ddb_OutputDevice.Enabled = false;
             this.ddb_OutputDevice.Location = new System.Drawing.Point(124, 12);
             this.ddb_OutputDevice.Name = "ddb_OutputDevice";
             this.ddb_OutputDevice.Size = new System.Drawing.Size(226, 23);
@@ -66,6 +68,7 @@
             // 
             // chk_PlayWhenSelected
             // 
+            this.chk_PlayWhenSelected.Enabled = false;
             this.chk_PlayWhenSelected.Location = new System.Drawing.Point(12, 63);
             this.chk_PlayWhenSelected.Name = "chk_PlayWhenSelected";
             this.chk_PlayWhenSelected.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F);
@@ -77,7 +80,8 @@
             // 
             // btn_Backup
             // 
-            this.btn_Backup.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton1.ImageOptions.SvgImage")));
+            this.btn_Backup.Enabled = false;
+            this.btn_Backup.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_Backup.ImageOptions.SvgImage")));
             this.btn_Backup.Location = new System.Drawing.Point(95, 329);
             this.btn_Backup.Name = "btn_Backup";
             this.btn_Backup.Size = new System.Drawing.Size(157, 41);
@@ -86,7 +90,8 @@
             // 
             // btn_Restore
             // 
-            this.btn_Restore.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton2.ImageOptions.SvgImage")));
+            this.btn_Restore.Enabled = false;
+            this.btn_Restore.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btn_Restore.ImageOptions.SvgImage")));
             this.btn_Restore.Location = new System.Drawing.Point(95, 376);
             this.btn_Restore.Name = "btn_Restore";
             this.btn_Restore.Size = new System.Drawing.Size(157, 41);
@@ -108,7 +113,7 @@
             this.Font = new System.Drawing.Font("Tahoma", 12F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.IconOptions.Image = global::Sesuruk.Properties.Resources.Sesuruk;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximumSize = new System.Drawing.Size(364, 482);
             this.MinimumSize = new System.Drawing.Size(364, 482);
             this.Name = "FormSettings";

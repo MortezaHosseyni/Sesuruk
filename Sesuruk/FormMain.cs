@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AudioSwitcher.AudioApi;
+using AudioSwitcher.AudioApi.CoreAudio;
 using DevExpress.XtraBars;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
@@ -55,6 +57,12 @@ namespace Sesuruk
             {
                 _soundList.Add(sound);
             }
+        }
+
+        private async void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            await _previousInputDevice.SetAsDefaultAsync();
+            await _previousInputDevice.SetAsDefaultCommunicationsAsync();
         }
 
         private void dgv_SoundsList_CustomDrawRowIndicator(object sender, RowIndicatorCustomDrawEventArgs e)
@@ -139,8 +147,14 @@ namespace Sesuruk
 
         #region Play & Load Sounds
         private WaveOutEvent _outputDevice;
-        private WaveStream _audioFile;
+        private WaveOutEvent _speakerOutputDevice;
+        private IWaveProvider _audioFileVirtualCable;
+        private IWaveProvider _audioFileSpeaker;
         private bool _isPlaying;
+
+        private bool _playFromSpeakerAlso;
+
+        private CoreAudioDevice _previousInputDevice;
 
         public async Task PlaySound()
         {
@@ -154,10 +168,26 @@ namespace Sesuruk
 
             StopSound();
 
+            SetInputDeviceToCableOutput();
+
             if (audioFilePath.EndsWith(".ogg", StringComparison.OrdinalIgnoreCase))
-                _audioFile = new VorbisWaveReader(audioFilePath);
+            {
+                try
+                {
+                    _audioFileVirtualCable = new VorbisWaveReader(audioFilePath);
+                    _audioFileSpeaker = new VorbisWaveReader(audioFilePath);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error loading Ogg file: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
             else
-                _audioFile = new AudioFileReader(audioFilePath);
+            {
+                _audioFileVirtualCable = new AudioFileReader(audioFilePath);
+                _audioFileSpeaker = new AudioFileReader(audioFilePath);
+            }
 
             _outputDevice = new WaveOutEvent();
 
@@ -172,17 +202,38 @@ namespace Sesuruk
                 return;
             }
 
-            _outputDevice.Init(_audioFile);
+            _outputDevice.Init(_audioFileVirtualCable);
+
+            if (_playFromSpeakerAlso)
+            {
+                _speakerOutputDevice = new WaveOutEvent();
+                _speakerOutputDevice.DeviceNumber = -1;
+
+                try
+                {
+                    _speakerOutputDevice.Init(_audioFileSpeaker);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error initializing speaker output: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
 
             _outputDevice.PlaybackStopped += OnPlaybackStopped;
 
+            _outputDevice.Play();
+
+            if (_playFromSpeakerAlso)
+            {
+                _speakerOutputDevice.Play();
+            }
+
             _isPlaying = true;
 
-            var totalDuration = _audioFile.TotalTime;
+            var totalDuration = (_audioFileVirtualCable as AudioFileReader)?.TotalTime ?? TimeSpan.Zero;
             pgb_SoundProgress.Properties.Maximum = (int)totalDuration.TotalSeconds;
             pgb_SoundProgress.EditValue = 0;
-
-            _outputDevice.Play();
 
             btn_PlayPause.ImageOptions.SvgImage = Properties.Resources.pause;
 
@@ -190,7 +241,7 @@ namespace Sesuruk
 
             while (_outputDevice?.PlaybackState == PlaybackState.Playing && _isPlaying)
             {
-                var currentPosition = _audioFile.CurrentTime;
+                var currentPosition = (_audioFileVirtualCable as AudioFileReader)?.CurrentTime ?? TimeSpan.Zero;
 
                 pgb_SoundProgress.EditValue = (int)currentPosition.TotalSeconds;
 
@@ -205,27 +256,74 @@ namespace Sesuruk
             StopSound();
         }
 
-        private void OnPlaybackStopped(object sender, StoppedEventArgs e)
-        {
-            _isPlaying = false;
-        }
-
         public void StopSound()
         {
-            if (_outputDevice == null) return;
+            RevertToPreviousInputDevice();
 
-            _outputDevice.Stop();
-            _outputDevice.Dispose();
-            _outputDevice = null;
+            if (_outputDevice != null)
+            {
+                _outputDevice.Stop();
+                _outputDevice.Dispose();
+                _outputDevice = null;
+            }
 
-            _audioFile?.Dispose();
-            _audioFile = null;
+            if (_speakerOutputDevice != null)
+            {
+                _speakerOutputDevice.Stop();
+                _speakerOutputDevice.Dispose();
+                _speakerOutputDevice = null;
+            }
+
+            if (_audioFileVirtualCable != null)
+            {
+                (_audioFileVirtualCable as IDisposable)?.Dispose();
+                _audioFileVirtualCable = null;
+            }
+
+            if (_audioFileSpeaker != null)
+            {
+                (_audioFileSpeaker as IDisposable)?.Dispose();
+                _audioFileSpeaker = null;
+            }
 
             _isPlaying = false;
 
             pgb_SoundProgress.EditValue = 0;
             ctx_SoundDuration.Text = "00:00";
             btn_PlayPause.ImageOptions.SvgImage = Properties.Resources.next;
+        }
+
+        private async void SetInputDeviceToCableOutput()
+        {
+            var controller = new CoreAudioController();
+
+            _previousInputDevice = controller.DefaultCaptureDevice;
+
+            var devices = await controller.GetDevicesAsync(DeviceType.Capture);
+            var cableOutputDevice = devices.FirstOrDefault(d => d.FullName.Contains("CABLE Output"));
+
+            if (cableOutputDevice != null)
+            {
+                await cableOutputDevice.SetAsDefaultAsync();
+                await cableOutputDevice.SetAsDefaultCommunicationsAsync();
+            }
+            else
+            {
+                MessageBox.Show("CABLE Output device not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async void RevertToPreviousInputDevice()
+        {
+            if (_previousInputDevice == null) return;
+
+            await _previousInputDevice.SetAsDefaultAsync();
+            await _previousInputDevice.SetAsDefaultCommunicationsAsync();
+        }
+
+        private void OnPlaybackStopped(object sender, StoppedEventArgs e)
+        {
+            _isPlaying = false;
         }
 
         private async void btn_PlayPause_Click(object sender, EventArgs e)
@@ -287,6 +385,20 @@ namespace Sesuruk
             else
             {
                 MessageBox.Show("There is no previous sound.", "No Sound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void btn_PlayFromSpeaker_Click(object sender, EventArgs e)
+        {
+            if (!_playFromSpeakerAlso)
+            {
+                _playFromSpeakerAlso = true;
+                btn_PlayFromSpeaker.ImageOptions.SvgImage = Properties.Resources.Headphone2;
+            }
+            else
+            {
+                _playFromSpeakerAlso = false;
+                btn_PlayFromSpeaker.ImageOptions.SvgImage = Properties.Resources.Headphone;
             }
         }
         #endregion

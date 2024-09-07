@@ -52,6 +52,7 @@
             this.btn_Next = new DevExpress.XtraEditors.SimpleButton();
             this.btn_PlayPause = new DevExpress.XtraEditors.SimpleButton();
             this.pnl_OpButtons = new DevExpress.XtraEditors.PanelControl();
+            this.btn_PlayFromSpeaker = new DevExpress.XtraEditors.SimpleButton();
             this.btn_DeleteSound = new DevExpress.XtraEditors.SimpleButton();
             this.btn_AddSound = new DevExpress.XtraEditors.SimpleButton();
             this.dgv_SoundsList = new DevExpress.XtraGrid.GridControl();
@@ -288,12 +289,24 @@
             // 
             this.pnl_OpButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnl_OpButtons.Controls.Add(this.btn_PlayFromSpeaker);
             this.pnl_OpButtons.Controls.Add(this.btn_DeleteSound);
             this.pnl_OpButtons.Controls.Add(this.btn_AddSound);
             this.pnl_OpButtons.Location = new System.Drawing.Point(12, 565);
             this.pnl_OpButtons.Name = "pnl_OpButtons";
             this.pnl_OpButtons.Size = new System.Drawing.Size(780, 78);
             this.pnl_OpButtons.TabIndex = 7;
+            // 
+            // btn_PlayFromSpeaker
+            // 
+            this.btn_PlayFromSpeaker.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.btn_PlayFromSpeaker.ImageOptions.SvgImage = global::Sesuruk.Properties.Resources.Headphone;
+            this.btn_PlayFromSpeaker.Location = new System.Drawing.Point(5, 23);
+            this.btn_PlayFromSpeaker.Name = "btn_PlayFromSpeaker";
+            this.btn_PlayFromSpeaker.Size = new System.Drawing.Size(39, 36);
+            this.btn_PlayFromSpeaker.TabIndex = 12;
+            this.btn_PlayFromSpeaker.ToolTip = "Play sound from speakers also";
+            this.btn_PlayFromSpeaker.Click += new System.EventHandler(this.btn_PlayFromSpeaker_Click);
             // 
             // btn_DeleteSound
             // 
@@ -378,6 +391,7 @@
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sesuruk";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.Load += new System.EventHandler(this.FormMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.brm_TopBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mnu_Sound)).EndInit();
@@ -427,6 +441,7 @@
         private DevExpress.XtraGrid.Views.Grid.GridView grv_Main;
         private DevExpress.DataAccess.Json.JsonDataSource jds_SoundSource;
         private DevExpress.XtraEditors.PanelControl pnl_SoundsList;
+        private DevExpress.XtraEditors.SimpleButton btn_PlayFromSpeaker;
     }
 }
 
