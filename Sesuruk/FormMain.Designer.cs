@@ -260,6 +260,7 @@
             this.btn_Previous.Name = "btn_Previous";
             this.btn_Previous.Size = new System.Drawing.Size(39, 36);
             this.btn_Previous.TabIndex = 7;
+            this.btn_Previous.Click += new System.EventHandler(this.btn_Previous_Click);
             // 
             // btn_Next
             // 
@@ -270,6 +271,7 @@
             this.btn_Next.Name = "btn_Next";
             this.btn_Next.Size = new System.Drawing.Size(39, 36);
             this.btn_Next.TabIndex = 7;
+            this.btn_Next.Click += new System.EventHandler(this.btn_Next_Click);
             // 
             // btn_PlayPause
             // 

@@ -123,8 +123,16 @@ namespace Sesuruk
 
             var id = view.GetFocusedRowCellValue("Id");
 
-            _soundManager.Delete(Guid.Parse(id.ToString()));
+            if (id == null) return;
 
+            var result = MessageBox.Show("Are you sure you want to delete this sound?",
+                "Delete Confirmation",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (result != DialogResult.Yes) return;
+
+            _soundManager.Delete(Guid.Parse(id.ToString()));
             LoadSounds();
         }
         #endregion
@@ -236,6 +244,50 @@ namespace Sesuruk
 
             StopSound();
             _currentSound = location;
+        }
+
+        private void btn_Next_Click(object sender, EventArgs e)
+        {
+            if (!(dgv_SoundsList.MainView is GridView view)) return;
+
+            var currentRowHandle = view.FocusedRowHandle;
+
+            if (currentRowHandle + 1 < view.RowCount)
+            {
+                view.FocusedRowHandle = currentRowHandle + 1;
+                view.MakeRowVisible(currentRowHandle + 1);
+
+                var nextRowLocation = view.GetRowCellValue(currentRowHandle + 1, "Location").ToString();
+
+                StopSound();
+                _currentSound = nextRowLocation;
+            }
+            else
+            {
+                MessageBox.Show("There is no next sound.", "No Sound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void btn_Previous_Click(object sender, EventArgs e)
+        {
+            if (!(dgv_SoundsList.MainView is GridView view)) return;
+
+            var currentRowHandle = view.FocusedRowHandle;
+
+            if (currentRowHandle - 1 < view.RowCount)
+            {
+                view.FocusedRowHandle = currentRowHandle - 1;
+                view.MakeRowVisible(currentRowHandle - 1);
+
+                var nextRowLocation = view.GetRowCellValue(currentRowHandle - 1, "Location").ToString();
+
+                StopSound();
+                _currentSound = nextRowLocation;
+            }
+            else
+            {
+                MessageBox.Show("There is no previous sound.", "No Sound", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
         #endregion
     }
