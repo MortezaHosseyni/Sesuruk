@@ -45,13 +45,13 @@
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.pgb_SoundProgress = new DevExpress.XtraEditors.ProgressBarControl();
             this.pnl_SoundPlay = new DevExpress.XtraEditors.PanelControl();
-            this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
+            this.ctx_OutputDeviceName = new DevExpress.XtraEditors.LabelControl();
             this.ctx_CurrentSoundName = new DevExpress.XtraEditors.LabelControl();
             this.ctx_SoundDuration = new DevExpress.XtraEditors.LabelControl();
             this.btn_Previous = new DevExpress.XtraEditors.SimpleButton();
             this.btn_Next = new DevExpress.XtraEditors.SimpleButton();
             this.btn_PlayPause = new DevExpress.XtraEditors.SimpleButton();
-            this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
+            this.pnl_OpButtons = new DevExpress.XtraEditors.PanelControl();
             this.btn_DeleteSound = new DevExpress.XtraEditors.SimpleButton();
             this.btn_AddSound = new DevExpress.XtraEditors.SimpleButton();
             this.dgv_SoundsList = new DevExpress.XtraGrid.GridControl();
@@ -64,8 +64,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pgb_SoundProgress.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnl_SoundPlay)).BeginInit();
             this.pnl_SoundPlay.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
-            this.panelControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pnl_OpButtons)).BeginInit();
+            this.pnl_OpButtons.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_SoundsList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grv_Main)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnl_SoundsList)).BeginInit();
@@ -209,7 +209,7 @@
             // 
             this.pnl_SoundPlay.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnl_SoundPlay.Controls.Add(this.labelControl1);
+            this.pnl_SoundPlay.Controls.Add(this.ctx_OutputDeviceName);
             this.pnl_SoundPlay.Controls.Add(this.ctx_CurrentSoundName);
             this.pnl_SoundPlay.Controls.Add(this.ctx_SoundDuration);
             this.pnl_SoundPlay.Controls.Add(this.btn_Previous);
@@ -221,15 +221,15 @@
             this.pnl_SoundPlay.Size = new System.Drawing.Size(780, 63);
             this.pnl_SoundPlay.TabIndex = 6;
             // 
-            // labelControl1
+            // ctx_OutputDeviceName
             // 
-            this.labelControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.ctx_OutputDeviceName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.labelControl1.Location = new System.Drawing.Point(140, 42);
-            this.labelControl1.Name = "labelControl1";
-            this.labelControl1.Size = new System.Drawing.Size(24, 13);
-            this.labelControl1.TabIndex = 10;
-            this.labelControl1.Text = "XXXX";
+            this.ctx_OutputDeviceName.Location = new System.Drawing.Point(140, 42);
+            this.ctx_OutputDeviceName.Name = "ctx_OutputDeviceName";
+            this.ctx_OutputDeviceName.Size = new System.Drawing.Size(24, 13);
+            this.ctx_OutputDeviceName.TabIndex = 10;
+            this.ctx_OutputDeviceName.Text = "XXXX";
             // 
             // ctx_CurrentSoundName
             // 
@@ -281,16 +281,16 @@
             this.btn_PlayPause.Size = new System.Drawing.Size(39, 36);
             this.btn_PlayPause.TabIndex = 6;
             // 
-            // panelControl1
+            // pnl_OpButtons
             // 
-            this.panelControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.pnl_OpButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelControl1.Controls.Add(this.btn_DeleteSound);
-            this.panelControl1.Controls.Add(this.btn_AddSound);
-            this.panelControl1.Location = new System.Drawing.Point(12, 565);
-            this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(780, 78);
-            this.panelControl1.TabIndex = 7;
+            this.pnl_OpButtons.Controls.Add(this.btn_DeleteSound);
+            this.pnl_OpButtons.Controls.Add(this.btn_AddSound);
+            this.pnl_OpButtons.Location = new System.Drawing.Point(12, 565);
+            this.pnl_OpButtons.Name = "pnl_OpButtons";
+            this.pnl_OpButtons.Size = new System.Drawing.Size(780, 78);
+            this.pnl_OpButtons.TabIndex = 7;
             // 
             // btn_DeleteSound
             // 
@@ -301,6 +301,7 @@
             this.btn_DeleteSound.Size = new System.Drawing.Size(39, 36);
             this.btn_DeleteSound.TabIndex = 11;
             this.btn_DeleteSound.ToolTip = "Remove sound";
+            this.btn_DeleteSound.Click += new System.EventHandler(this.btn_DeleteSound_Click);
             // 
             // btn_AddSound
             // 
@@ -331,6 +332,8 @@
             // 
             this.grv_Main.GridControl = this.dgv_SoundsList;
             this.grv_Main.Name = "grv_Main";
+            this.grv_Main.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.False;
+            this.grv_Main.OptionsBehavior.AllowDeleteRows = DevExpress.Utils.DefaultBoolean.False;
             this.grv_Main.OptionsBehavior.Editable = false;
             this.grv_Main.OptionsBehavior.ReadOnly = true;
             // 
@@ -340,7 +343,8 @@
             // 
             // pnl_SoundsList
             // 
-            this.pnl_SoundsList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.pnl_SoundsList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnl_SoundsList.Controls.Add(this.dgv_SoundsList);
             this.pnl_SoundsList.Location = new System.Drawing.Point(12, 27);
@@ -357,7 +361,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(804, 655);
             this.Controls.Add(this.pnl_SoundsList);
-            this.Controls.Add(this.panelControl1);
+            this.Controls.Add(this.pnl_OpButtons);
             this.Controls.Add(this.pnl_SoundPlay);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
@@ -378,8 +382,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pnl_SoundPlay)).EndInit();
             this.pnl_SoundPlay.ResumeLayout(false);
             this.pnl_SoundPlay.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
-            this.panelControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pnl_OpButtons)).EndInit();
+            this.pnl_OpButtons.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_SoundsList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grv_Main)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnl_SoundsList)).EndInit();
@@ -406,10 +410,10 @@
         private DevExpress.XtraEditors.SimpleButton btn_Next;
         private DevExpress.XtraEditors.LabelControl ctx_SoundDuration;
         private DevExpress.XtraEditors.LabelControl ctx_CurrentSoundName;
-        private DevExpress.XtraEditors.PanelControl panelControl1;
+        private DevExpress.XtraEditors.PanelControl pnl_OpButtons;
         private DevExpress.XtraEditors.SimpleButton btn_DeleteSound;
         private DevExpress.XtraEditors.SimpleButton btn_AddSound;
-        private DevExpress.XtraEditors.LabelControl labelControl1;
+        private DevExpress.XtraEditors.LabelControl ctx_OutputDeviceName;
         private DevExpress.XtraBars.PopupMenu mnu_Sound;
         private DevExpress.XtraBars.PopupMenu mnu_Help;
         private DevExpress.XtraBars.BarButtonItem btn_AddSoundTop;

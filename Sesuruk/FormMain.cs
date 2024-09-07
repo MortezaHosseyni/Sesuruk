@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows.Forms;
 using DevExpress.XtraBars;
 using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Views.Grid;
 using Sesuruk.Forms;
 using Sesuruk.Functions;
 
@@ -23,6 +24,10 @@ namespace Sesuruk
 
             jds_SoundSource.FillAsync();
             dgv_SoundsList.DataSource = _soundList;
+
+            if (!(dgv_SoundsList.MainView is GridView view)) return;
+            view.Columns[0].Visible = false;
+            view.CustomDrawRowIndicator += dgv_SoundsList_CustomDrawRowIndicator;
         }
 
         #region Loading
@@ -30,6 +35,7 @@ namespace Sesuruk
         {
             LoadSounds();
         }
+
         private void LoadSounds()
         {
             _soundList.Clear();
@@ -40,8 +46,20 @@ namespace Sesuruk
                 _soundList.Add(sound);
             }
         }
+
+        private void dgv_SoundsList_CustomDrawRowIndicator(object sender, RowIndicatorCustomDrawEventArgs e)
+        {
+            if (!(dgv_SoundsList.MainView is GridView view)) return;
+            if (!e.Info.IsRowIndicator || e.RowHandle < 0) return;
+
+            e.Info.DisplayText = (e.RowHandle + 1).ToString();
+
+            if (view.IndicatorWidth < 40)
+                view.IndicatorWidth = 40;
+        }
         #endregion
 
+        #region Help
         private void btn_SettingsForm_ItemClick(object sender, ItemClickEventArgs e)
         {
             var settingsForm = new FormSettings();
@@ -52,6 +70,7 @@ namespace Sesuruk
         {
             MessageBox.Show("Sesuruk\nV1.0.0", "About App", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+        #endregion
 
         #region Add Sound
         private void btn_AddSound_Click(object sender, EventArgs e)
@@ -83,6 +102,20 @@ namespace Sesuruk
                 MessageBox.Show(soundAdded.Item2, soundAdded.Item1 ? "Success" : "Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
             }
+        }
+
+        #endregion
+
+        #region Delete Sound
+        private void btn_DeleteSound_Click(object sender, EventArgs e)
+        {
+            if (!(dgv_SoundsList.MainView is GridView view)) return;
+
+            var id = view.GetFocusedRowCellValue("Id");
+
+            _soundManager.Delete(Guid.Parse(id.ToString()));
+
+            LoadSounds();
         }
         #endregion
     }
