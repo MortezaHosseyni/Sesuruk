@@ -14,6 +14,7 @@ To run Sesuruk, ensure your system meets the following requirements:
 - .NET Framework 4.8
 - A microphone and speakers or headphones for sound input and output
 - [VBCABLE_Setup_x64](https://vb-audio.com/Cable/) driver installed (for playing sounds via the microphone)
+- [VAC470](https://vac.muzychenko.net/en/download.htm) driver installed (for playing sounds via the microphone)
 
 > **Note**: Sesuruk uses the third-party **VBCABLE_Setup_x64** driver for routing audio through the microphone. Please ensure that the driver is installed and configured correctly on your system.
 
@@ -63,6 +64,5 @@ Contributions are welcome! If you have suggestions for new features, bug fixes, 
 If you encounter any bugs or have feature requests, please create an issue on the GitHub repository.
 
 ## Acknowledgements
-- Inspired by Soundpad.
 - Developed with love using C# and .NET Framework 4.8.
 - VBCABLE driver used for audio routing to the microphone.
