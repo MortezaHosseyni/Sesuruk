@@ -18,15 +18,6 @@ To run Sesuruk, ensure your system meets the following requirements:
 
 > **Note**: Sesuruk uses the third-party **VBCABLE_Setup_x64** driver for routing audio through the microphone. Please ensure that the driver is installed and configured correctly on your system.
 
-## Installation
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/your-username/sesuruk.git
-   ```
-2. **Build the project**: Open the solution file (.sln) in Visual Studio, then build the project to compile the application.
-3. **Install VBCABLE Driver**: Download and install the VBCABLE_Setup_x64 driver from VBCABLE official website (if you use installer you don't need download it).
-4. **Run the application**: After building, run the application from Visual Studio, or find the executable in the bin/Debug folder.
-
 ## How to Use
 1. **Import Sounds**:
 - Launch the Sesuruk application.
