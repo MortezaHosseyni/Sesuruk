@@ -42,27 +42,6 @@ To run Sesuruk, ensure your system meets the following requirements:
 - Click "Play" to broadcast the sound via your microphone using the VBCABLE driver.
 - Enable 'Play on speaker also' option for head sound from your headset or speaker.
 
-## Contributing
-Contributions are welcome! If you have suggestions for new features, bug fixes, or improvements, please follow these steps:
-
-1. **Fork the repository**.
-2. **Create a new branch**:
-   ```bash
-   git checkout -b feature/your-feature
-   ```
-3. **Commit your changes**:
-   ```bash
-   git commit -m "Add your feature"
-   ```
-5. **Push to the branch**:
-   ```bash
-   git push origin feature/your-feature
-   ```
-7. **Create a pull request.**
-
-## Issues
-If you encounter any bugs or have feature requests, please create an issue on the GitHub repository.
-
 ## Acknowledgements
 - Developed with love using C# and .NET Framework 4.8.
 - VBCABLE driver used for audio routing to the microphone.
